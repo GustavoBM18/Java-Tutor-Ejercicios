@@ -120,56 +120,20 @@
               <li>Si se encuentra, imprimir la posición y detener la búsqueda. Si termina el arreglo sin éxito, indicar que no se encontró.</li>
             </ul>
 
-            <h3>Ejemplo de Implementación (Java)</h3>
+            <h3>Ejemplo de resultado</h3>
+            
             <pre><code class="code-block">
-import java.util.*;
+Ingrese el tamaño del arreglo (N): 5
+Ingrese los 5 elementos:
+Elemento [1]: 10
+Elemento [2]: 50
+Elemento [3]: 23
+Elemento [4]: 8
+Elemento [5]: 99
+Ingrese el valor a buscar (X): 23
 
-public class BusquedaSecuencial {
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        // 1. Lectura de N
-        System.out.print("Ingrese el tamaño del arreglo (N): ");
-        int N = sc.nextInt();
-
-        if (N < 1 || N > 50) {
-            System.out.println("Error: N debe estar entre 1 y 50.");
-            return;
-        }
-
-        int[] VECTOR = new int[N];
-
-        // 2. Llenado del arreglo
-        System.out.println("Ingrese los " + N + " elementos:");
-        for (int i = 0; i < N; i++) {
-            System.out.print("Elemento [" + (i + 1) + "]: ");
-            VECTOR[i] = sc.nextInt();
-        }
-
-        // 3. Lectura del valor a buscar
-        System.out.print("Ingrese el valor a buscar (X): ");
-        int X = sc.nextInt();
-
-        // 4. Búsqueda Secuencial
-        int posicion = -1; // -1 indica no encontrado
-        
-        for (int i = 0; i < N; i++) {
-            if (VECTOR[i] == X) {
-                posicion = i + 1; // Guardamos posición (base 1)
-                break; // Terminamos búsqueda al encontrarlo
-            }
-        }
-
-        // 5. Resultados
-        if (posicion != -1) {
-            System.out.println("El elemento " + X + " fue encontrado en la posición: " + posicion);
-        } else {
-            System.out.println("El elemento " + X + " NO se encuentra en el arreglo.");
-        }
-    }
-}
-            </code></pre>
+El elemento 23 fue encontrado en la posición: 3
+</code></pre>
           </section>
 
           <aside class="exercise-sidebar">

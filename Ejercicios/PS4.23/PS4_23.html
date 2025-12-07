@@ -129,85 +129,39 @@
               <li>(d) En la carrera <code>T</code>, localizar el año con el máximo ingreso.</li>
             </ul>
 
-            <h3>Ejemplo de uso (Java 21)</h3>
+            <h3>Ejemplo de resultado</h3>
             <pre><code class="code-block">
-// Archivo: IngresosUniversidad.java
-// PS 4.23 — 12 años x 7 carreras
+--- Ingreso de Datos (Matriz 12x7) ---
+Año 1:
+  ALUM[1][1] = 120
+  ALUM[1][2] = 100
+  ... [resto de carreras]
+Año 4:
+  ...
+  ALUM[4][7] = 5  <-- (Este será el mínimo global)
+  ...
+Año 12:
+  ... [últimos datos]
 
-import java.util.*;
+--- Parámetros de consulta ---
+X (año 1..12): 1
+Y (carrera 1..7): 2
+T (carrera 1..7): 1
 
-public class IngresosUniversidad {
+--- RESULTADOS ---
 
-    public static void main(String[] args) {
-        final int ANIOS = 12, CARRERAS = 7;
-        Scanner sc = new Scanner(System.in).useLocale(Locale.US);
+(a) Totales por año:
+  Año  1: 850 alumnos
+  Año  2: 900 alumnos
+  ...
+  Año 12: 1100 alumnos
 
-        int[][] ALUM = new int[ANIOS][CARRERAS];
+(b) Porcentaje carrera 2 en año 1: 11.76%
+    (Cálculo: 100 alumnos / 850 total * 100)
 
-        // --- Lectura de la matriz ---
-        for (int i = 0; i < ANIOS; i++) {
-            System.out.println("Año " + (i + 1) + ":");
-            for (int j = 0; j < CARRERAS; j++) {
-                System.out.print("  ALUM[" + (i + 1) + "][" + (j + 1) + "] = ");
-                ALUM[i][j] = sc.nextInt(); // >= 0
-            }
-        }
+(c) Menor ingreso: 5 alumnos (año 4, carrera 7)
 
-        // Parámetros para (b) y (d)
-        System.out.print("X (año 1..12): ");
-        int X = sc.nextInt();
-        System.out.print("Y (carrera 1..7): ");
-        int Y = sc.nextInt();
-        System.out.print("T (carrera 1..7): ");
-        int T = sc.nextInt();
-
-        if (X < 1 || X > 12 || Y < 1 || Y > 7 || T < 1 || T > 7) {
-            System.out.println("Error: X, Y o T fuera de rango.");
-            sc.close();
-            return;
-        }
-
-        // (a) Totales por año
-        int[] sumaAnio = new int[ANIOS];
-        for (int i = 0; i < ANIOS; i++) {
-            int suma = 0;
-            for (int j = 0; j < CARRERAS; j++) suma += ALUM[i][j];
-            sumaAnio[i] = suma;
-        }
-
-        System.out.println("\n(a) Totales por año:");
-        for (int i = 0; i < ANIOS; i++) {
-            System.out.printf(Locale.US, "  Año %2d: %d alumnos%n", (i + 1), sumaAnio[i]);
-        }
-
-        // (b) Porcentaje del año X y carrera Y
-        double porcentaje = (sumaAnio[X - 1] == 0) ? 0.0
-            : (ALUM[X - 1][Y - 1] * 100.0) / sumaAnio[X - 1];
-        System.out.printf(Locale.US,
-            "%n(b) Porcentaje carrera %d en año %d: %.2f%%%n", Y, X, porcentaje);
-
-        // (c) Año y carrera con menor ingreso (mínimo global)
-        int minVal = Integer.MAX_VALUE, minAnio = -1, minCar = -1;
-        for (int i = 0; i < ANIOS; i++) {
-            for (int j = 0; j < CARRERAS; j++) {
-                if (ALUM[i][j] < minVal) { minVal = ALUM[i][j]; minAnio = i + 1; minCar = j + 1; }
-            }
-        }
-        System.out.printf("(c) Menor ingreso: %d alumnos (año %d, carrera %d)%n",
-                minVal, minAnio, minCar);
-
-        // (d) En la carrera T, año con mayor ingreso
-        int maxVal = -1, anioMax = -1;
-        for (int i = 0; i < ANIOS; i++) {
-            if (ALUM[i][T - 1] > maxVal) { maxVal = ALUM[i][T - 1]; anioMax = i + 1; }
-        }
-        System.out.printf("(d) Carrera %d tuvo su mayor ingreso en el año %d (%d alumnos)%n",
-                T, anioMax, maxVal);
-
-        sc.close();
-        // FIN
-    }
-}
+(d) Carrera 1 tuvo su mayor ingreso en el año 8 (320 alumnos)
             </code></pre>
           </section>
 
