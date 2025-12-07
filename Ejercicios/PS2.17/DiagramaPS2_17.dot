@@ -1,0 +1,53 @@
+digraph ConversionesAutomatico {
+    // Configuración General
+    rankdir=TB;
+    // Quitamos 'splines=ortho' para dejar las líneas libres (curvas por defecto)
+    
+    node [fontname="Arial", fontsize=12, style="filled"];
+    edge [fontsize=10];
+    bgcolor="transparent";
+
+    // --- NODOS ---
+
+    // Inicio y Entrada (Azul y Gris Claro)
+    Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+    Entrada [label="OPCION, MED", shape=parallelogram, fillcolor="#F9F9F9"];
+    
+    // Selector (Verde Claro)
+    Selector [label="OPCION", shape=hexagon, fillcolor="#C8E6C9"];
+
+    // Opciones de Conversión (Gris Claro)
+    Calc1 [label="RES ← MED * 25.40\n(Pulg a mm)", shape=box, fillcolor="#F9F9F9"];
+    Calc2 [label="RES ← MED * 0.9144\n(Yardas a m)", shape=box, fillcolor="#F9F9F9"];
+    Calc3 [label="RES ← MED * 1.6093\n(Millas a km)", shape=box, fillcolor="#F9F9F9"];
+
+    // Salida (Amarillo) y Fin (Azul)
+    Salida [label="RES", shape=egg, fillcolor="#FFF9C4"];
+    Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+    // --- CONEXIONES AUTOMÁTICAS ---
+    // Simples y directas, sin instrucciones de dirección
+
+    Inicio -> Entrada;
+    Entrada -> Selector;
+
+    // Ramas del selector
+    Selector -> Calc1 [label="1"];
+    Selector -> Calc2 [label="2"];
+    Selector -> Calc3 [label="3"];
+    
+    // Opción por defecto
+    Selector -> Fin [label="Otro"];
+
+    // Unificar caminos
+    Calc1 -> Salida;
+    Calc2 -> Salida;
+    Calc3 -> Salida;
+
+    // Final
+    Salida -> Fin;
+
+    // --- ALINEACIÓN ---
+    // Mantenemos solo esto para que los cuadros no salgan uno encima de otro
+    { rank=same; Calc1; Calc2; Calc3; }
+}

@@ -1,0 +1,98 @@
+digraph DiagramaUniversidadSinClusters {
+    // Configuración general del grafo
+    rankdir=TB; // De arriba abajo
+    node [fontname="Arial", fontsize=11, style="filled", fillcolor="#F9F9F9"];
+    edge [fontsize=10];
+    bgcolor="transparent";    
+    splines=ortho; // Conexiones en ángulo recto para mayor claridad
+
+    // --- 1. INICIO Y LECTURA ---
+    Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+    InputMatriz [label="Leer Matriz\nALUM[1..12, 1..7]", shape=parallelogram];
+    InitMin [label="MIN_VAL ← ALUM[1,1]\nMIN_ANIO ← 1, MIN_CAR ← 1\nI ← 1", shape=box];
+    
+    // --- 2. PROCESAMIENTO DE LA MATRIZ Y CICLOS ---
+    
+    // Ciclo I (Años)
+    LoopI [label="I ≤ 12", shape=diamond, fillcolor="#C8E6C9"];
+    InitRow [label="SUM_ANIO ← 0\nJ ← 1", shape=box];
+
+    // Ciclo J (Carreras)
+    LoopJ [label="J ≤ 7", shape=diamond, fillcolor="#A5D6A7"];
+    CalcSum [label="SUM_ANIO ← SUM_ANIO + ALUM[I,J]", shape=box];
+    CheckMin [label="ALUM[I,J] < MIN_VAL", shape=diamond];
+    UpdateMin [label="MIN_VAL, MIN_ANIO, MIN_CAR", shape=box, fillcolor="#FFCDD2"];
+    IncJ [label="J ← J + 1", shape=box];
+
+    // Salida Ciclo J
+    SaveTotal [label="TOT[I] ← SUM_ANIO", shape=box]; 
+    PrintA [label="Imprimir Total Año (Inciso A)", shape=note, fillcolor="#FFF9C4"];
+    IncI [label="I ← I + 1", shape=box];
+    
+    // --- 3. CÁLCULOS FINALES ---
+    
+    // Inciso C (Menor Global)
+    PrintC [label="Imprimir Menor Ingreso Global (Inciso C)", shape=note, fillcolor="#FFECB3"];
+    
+    // Inciso B (Porcentaje)
+    InputB [label="Input X, Y (Año y Carrera)", shape=parallelogram];
+    CalcB [label="PORC ← (ALUM[X,Y] * 100) / TOT[X]", shape=box];
+    PrintB [label="Imprimir Porcentaje (Inciso B)", shape=note, fillcolor="#FFECB3"];
+
+    // Inciso D (Mejor Año Carrera T)
+    InputD [label="Input Carrera T", shape=parallelogram];
+    InitMaxT [label="MAX_VAL ← 0\nMAX_ANIO ← 0\nK ← 1", shape=box];
+    LoopK [label="K ≤ 12", shape=diamond, fillcolor="#FFCCBC"];
+    CheckMaxT [label="ALUM[K,T] > MAX_VAL", shape=diamond];
+    UpdateMaxT [label="MAX_VAL, MAX_ANIO", shape=box, fillcolor="#FFCDD2"];
+    IncK [label="K ← K + 1", shape=box];
+    PrintD [label="Imprimir Mejor Año Carrera T (Inciso D)", shape=note, fillcolor="#FFECB3"];
+    
+    // FIN
+    Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+    // --- CONEXIONES ---
+    
+    // 1. INICIO Y LECTURA
+    Inicio -> InputMatriz;
+    InputMatriz -> InitMin;
+    InitMin -> LoopI; // Va al ciclo I
+
+    // 2. PROCESAMIENTO DE LA MATRIZ (Ciclos I y J)
+    LoopI -> InitRow [label="Si"];
+    InitRow -> LoopJ;
+    
+    LoopJ -> CalcSum [label="Si"];
+    CalcSum -> CheckMin;
+    CheckMin -> UpdateMin [label="Si"];
+    CheckMin -> IncJ [label="No"];
+    UpdateMin -> IncJ;
+    IncJ -> LoopJ; // Retorno J
+    
+    LoopJ -> SaveTotal [label="No"]; // Salida Ciclo J
+    SaveTotal -> PrintA;
+    PrintA -> IncI;
+    IncI -> LoopI; // Retorno I
+
+    // 3. CÁLCULOS FINALES
+    LoopI -> PrintC [label="No"]; // Salida Ciclo I
+    
+    // Flujo lineal de Incisos B, C, D
+    PrintC -> InputB;
+    InputB -> CalcB;
+    CalcB -> PrintB;
+    PrintB -> InputD;
+    
+    // Conexiones del Ciclo K (Inciso D)
+    InputD -> InitMaxT;
+    InitMaxT -> LoopK;
+    LoopK -> CheckMaxT [label="Si"];
+    CheckMaxT -> UpdateMaxT [label="Si"];
+    CheckMaxT -> IncK [label="No"];
+    UpdateMaxT -> IncK;
+    IncK -> LoopK;
+    LoopK -> PrintD [label="No"];
+    
+    // FIN
+    PrintD -> Fin;
+}

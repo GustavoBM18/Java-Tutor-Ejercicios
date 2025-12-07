@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Industrias: Producción Anual</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="industrias" class="exercise-card" aria-labelledby="industrias-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">Problema 3.18</span>
+          <h2 id="industrias-title">Implementar código en Java para estadísticas de producción industrial</h2>
+
+          <p class="exercise-description">
+            Los datos reunidos en la Secretaría de Industrias relacionados a la producción de 
+            <b>N</b> fábricas (N &le; 100) en cada uno de los meses del año anterior. 
+            El programa debe procesar la entrada de datos (Clave de fábrica y 12 producciones mensuales) 
+            para generar reportes anuales y comparativos.
+          </p>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Requisitos del Algoritmo</h3>
+            <ul>
+              <li><b>a)</b> Calcular los totales anuales de producción de cada fábrica.</li>
+              <li><b>b)</b> Encontrar la clave de la fábrica que más produjo en el año e indicar el total de dicha producción.</li>
+              <li><b>c)</b> Imprimir las claves de las fábricas cuyas producciones en el mes de <b>julio</b> superaron los $3,000,000.</li>
+            </ul>
+
+            <h3>Ejemplo de uso esperado (Java)</h3>
+            <pre><code class="code-block">
+
+            </code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas (Variables)</h3>
+            <ul>
+              <li><code>I</code>: Variable entera. Representa la variable de control del ciclo externo.</li>
+              <li><code>MAYPRO</code>: Variable real. Almacena el total de la fábrica que más produjo en el año (se inicializa en cero para localizar el máximo).</li>
+              <li><code>CLAVE</code>: Variable entera. Almacena la clave de la fábrica que más dinero produjo en el año.</li>
+              <li><code>J</code>: Variable entera. Representa la variable de control del ciclo interno.</li>
+              <li><code>TOTANU</code>: Variable real. Acumula lo que vendió la fábrica en el año.</li>
+              <li><code>N</code> y <code>FABRICA</code>: Variables de tipo entero.</li>
+              <li><code>MES</code>: Variable de tipo real.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> Ten mucho cuidado con la variable <code>TOTANU</code>. Debes inicializarla en cero (<code>0.0</code>) <em>dentro</em> del primer ciclo (<code>for I</code>) pero <em>antes</em> del segundo (<code>for J</code>). Si la inicializas afuera de todo, sumarás la producción de todas las fábricas juntas en lugar de calcularla individualmente.
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../Problema3.18/Diagrama3_18_alta.png" alt="Diagrama de flujo del Problema 3.18">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

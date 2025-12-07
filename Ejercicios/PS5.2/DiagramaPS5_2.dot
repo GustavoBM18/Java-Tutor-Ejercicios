@@ -1,0 +1,131 @@
+digraph AlumnosRegistrosStyle {
+    // --- CONFIGURACIÓN GENERAL ---
+    rankdir=TB;
+    splines=ortho; // Líneas rectas/ortogonales
+    nodesep=0.6;   // Separación horizontal
+    ranksep=0.5;   // Separación vertical
+    bgcolor="transparent"; // FONDO TRANSPARENTE
+    fontname="Helvetica,Arial,sans-serif";
+
+    // --- ESTILOS POR DEFECTO (Nodos y Aristas) ---
+    node [
+        fontname="Helvetica,Arial,sans-serif",
+        fontsize=11, // Un poco más pequeño para que quepa el texto complejo
+        shape=box, 
+        style="filled,rounded",
+        penwidth=1.5,
+        color="black",        // Borde negro
+        fillcolor="white"
+    ];
+    edge [
+        fontname="Helvetica,Arial,sans-serif",
+        fontsize=9,
+        penwidth=1.2,
+        color="black",        // FLECHAS NEGRAS
+        style="solid",        // SIN PUNTEAR
+        arrowsize=0.8
+    ];
+
+    // --- APLICACIÓN DE COLORES SEMÁNTICOS ---
+
+    // 1. Terminales (Inicio/Fin) - VERDE SUAVE
+    node [shape=ellipse, fillcolor="#D4ECD6"] Inicio Fin;
+
+    // 2. Entradas (Paralelogramos) - AZUL SUAVE
+    node [shape=parallelogram, fillcolor="#D6EAF8"] InputN;
+
+    // 3. Salidas/Impresiones (Huevos) - AZUL SUAVE
+    node [shape=egg, fillcolor="#D6EAF8"] PrintA PrintB PrintC;
+
+    // 4. Procesos/Asignaciones (Cajas) - AMARILLO SUAVE
+    node [shape=box, fillcolor="#FCF3CF"] InitGlobal InitStudent GetCalif SumCalif SetNotExc IncK CalcProm UpdateMax IncI;
+
+    // 5. Decisiones (Rombos) - NARANJA SUAVE
+    // Aumentamos un poco el height para que quepa el texto de las condiciones largas
+    node [shape=diamond, fillcolor="#FAD7A0", height=0.8] CondI CondK CheckExc CheckA CheckB CheckC CheckMax;
+
+
+    // --- DEFINICIÓN DE LABELS (Textos originales) ---
+    Inicio [label="INICIO"];
+    InputN [label="Leer N"];
+    
+    InitGlobal [label="MAX_PROM ← 0\nMEJOR_NOM ← \"\"\nMEJOR_MAT ← 0\nI ← 1"];
+    CondI [label="¿I ≤ N?"];
+    InitStudent [label="SUMA ← 0\nTODO_EXC ← 'V'\nK ← 1"];
+    
+    CondK [label="¿K ≤ ESC[I].NSE?"];
+    GetCalif [label="CALIF ← ESC[I].SEM[K]"];
+    SumCalif [label="SUMA ← SUMA + CALIF"];
+    CheckExc [label="¿CALIF ≤ 9?"];
+    SetNotExc [label="TODO_EXC ← 'F'"];
+    IncK [label="K ← K + 1"];
+    
+    CalcProm [label="PROM ← SUMA / ESC[I].NSE"];
+    
+    CheckA [label="¿PROM > 9?"];
+    PrintA [label="\"A: Alumno Destacado\",\nESC[I].NOM, ESC[I].MAT"];
+    
+    CheckB [label="¿Carrera=\"Economía\"\nY\nTODO_EXC='V'?"];
+    PrintB [label="\"B: Economía Excelencia\",\nESC[I].NOM, ESC[I].MAT"];
+    
+    CheckC [label="¿Carrera=\"Ingeniería\nen Computación\"?"];
+    CheckMax [label="¿PROM > MAX_PROM?"];
+    UpdateMax [label="MAX_PROM ← PROM\nMEJOR_NOM ← ESC[I].NOM\nMEJOR_MAT ← ESC[I].MAT"];
+    
+    IncI [label="I ← I + 1"];
+    PrintC [label="\"C: Mejor Ing. Computación\",\nMEJOR_NOM, MEJOR_MAT, MAX_PROM"];
+    Fin [label="FIN"];
+
+
+    // --- CONEXIONES (Todas negras y sólidas) ---
+    // Se eliminaron los puertos manuales (:e, :w) para dejar que splines=ortho trabaje.
+
+    Inicio -> InputN;
+    InputN -> InitGlobal;
+    InitGlobal -> CondI;
+
+    // Entrar al Ciclo I
+    CondI -> InitStudent [label="Si"];
+    InitStudent -> CondK;
+
+    // Ciclo K (Semestres)
+    CondK -> GetCalif [label="Si"];
+    GetCalif -> SumCalif;
+    SumCalif -> CheckExc;
+    
+    CheckExc -> SetNotExc [label="Si"];
+    CheckExc -> IncK [label="No"];
+    SetNotExc -> IncK;
+    
+    // Retorno K (constraint=false para que suba sin romper el layout)
+    IncK -> CondK [constraint=false]; 
+
+    // Salida Ciclo K -> Calcular Promedio
+    CondK -> CalcProm [label="No"];
+    CalcProm -> CheckA;
+
+    // Inciso A
+    CheckA -> PrintA [label="Si"];
+    CheckA -> CheckB [label="No"];
+    PrintA -> CheckB;
+
+    // Inciso B
+    CheckB -> PrintB [label="Si"];
+    CheckB -> CheckC [label="No"];
+    PrintB -> CheckC;
+
+    // Inciso C
+    CheckC -> CheckMax [label="Si"];
+    CheckC -> IncI [label="No"]; // Si no es inge, avanza
+    
+    CheckMax -> UpdateMax [label="Si"];
+    CheckMax -> IncI [label="No"];
+    UpdateMax -> IncI;
+
+    // Retorno Ciclo I (constraint=false para subir)
+    IncI -> CondI [constraint=false];
+
+    // Salida Final
+    CondI -> PrintC [label="No"];
+    PrintC -> Fin;
+}

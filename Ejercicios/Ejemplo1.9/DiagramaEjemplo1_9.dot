@@ -1,0 +1,18 @@
+digraph DiagramaFlujoEstilizado {
+rankdir=TB;
+node [fontname="Arial", fontsize=12, style="filled"];
+edge [fontsize=10];
+bgcolor="transparent";
+splines=ortho;
+
+Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+Entrada [label="NUM", shape=parallelogram, fillcolor="#F9F9F9"];
+Proceso [label="CUA ← NUM * NUM\nCUB ← NUM ** 3", shape=box, fillcolor="#F9F9F9"];
+Salida [label="CUA, CUB", shape=egg, fillcolor="#FFF9C4"];
+Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+Inicio -> Entrada;
+Entrada -> Proceso;
+Proceso -> Salida;
+Salida -> Fin;
+}

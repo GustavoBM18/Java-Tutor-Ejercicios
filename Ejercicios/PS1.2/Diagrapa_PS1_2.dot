@@ -1,0 +1,18 @@
+digraph DiagramaCirculoEstilizado {
+rankdir=TB;
+nodesep=0.5;
+ranksep=0.5;
+splines=ortho;
+node [fontname="Arial", fontsize=11, style="filled", margin=0.15];
+edge [fontsize=10];
+bgcolor="transparent";
+Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC", group=main];
+Entrada [label="RADIO", shape=parallelogram, fillcolor="#F9F9F9", group=main];
+Proceso [label="AREA ← 3.1416 * (RADIO ^ 2)\nCIRCUNFERENCIA ← 2 * 3.1416 * RADIO", shape=box, fillcolor="#F9F9F9", group=main];
+Salida [label="AREA, CIRCUNFERENCIA", shape=egg, fillcolor="#FFF9C4", group=main];
+Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC", group=main];
+Inicio:s -> Entrada:n;
+Entrada:s -> Proceso:n;
+Proceso:s -> Salida:n;
+Salida:s -> Fin:n;
+}

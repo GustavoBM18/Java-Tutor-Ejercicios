@@ -1,0 +1,25 @@
+digraph DiagramaSueldoEstilizado {
+rankdir=TB;
+node [fontname="Arial", fontsize=12, style="filled"];
+edge [fontsize=10];
+bgcolor="transparent";
+splines=ortho;
+
+Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+Entrada [label="SUE", shape=parallelogram, fillcolor="#F9F9F9"];
+Decision [label="SUE < 1000", shape=diamond, fillcolor="#C8E6C9"];
+Proceso [label="AUM ← SUE * 0.15\nNSUE ← SUE + AUM", shape=box, fillcolor="#F9F9F9"];
+Salida [label="NSUE", shape=egg, fillcolor="#FFF9C4"];
+Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+Inicio -> Entrada;
+Entrada -> Decision;
+
+Decision -> Proceso [label="Si"];
+Proceso -> Salida;
+Salida -> Fin;
+
+Decision -> Fin [label="No"];
+
+{ rank=same; Salida; Fin; }
+}

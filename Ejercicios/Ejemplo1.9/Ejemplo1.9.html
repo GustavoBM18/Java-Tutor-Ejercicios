@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA COMPLETA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85); /* Fondo negro transparente */
+      backdrop-filter: blur(4px); /* Difuminado bonito */
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* --- AQUÍ ESTÁ EL CAMBIO PARA EL FONDO BLANCO --- */
+    .modal-content img {
+      background-color: white;  /* El fondo blanco */
+      padding: 20px;            /* Espacio interno para que no se vea apretado */
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;      /* Bordes redondeados más suaves */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra elegante */
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Cuadrado y cubo de un numero positivo</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="employee" class="exercise-card">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">Ejemplo 1.9</span>
+          <h2 id="employee-title">Implementar un código en Java para calcular cuadrado y cubo</h2>
+          
+          <p class="exercise-description">
+            Escriba un programa en Java que permita calcular e imprimir el cuadrado y el cubo de un número entero positivo NUM.
+          </p>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Requisitos</h3>
+            <ul>
+              <li>Solicitar al usuario un número entero y almacenarlo en una variable <code>NUM</code>.</li>
+              <li>Calcular el cuadrado de <code>NUM</code> y almacenarlo en una variable <code>CUA</code>.</li>
+              <li>Calcular el cubo de <code>NUM</code> y almacenarlo en una variable <code>CUB</code>.</li>
+              <li>Imprimir en pantalla los valores de <code>CUA</code> y <code>CUB</code>.</li>
+            </ul>
+            
+            <h3>Ejemplo de resultado</h3>
+            <pre><code class="code-block">
+</code></pre>
+          </section>
+          
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas</h3>
+            <p class="note-text">Este programa sigue una estructura secuencial con tres partes:</p>
+            <ul>
+              <li><b>Entrada:</b> Se lee un número entero (<code>NUM</code>) desde el teclado.</li>
+              <li><b>Proceso:</b> Se calcula el cuadrado (<code>CUA</code>) y el cubo (<code>CUB</code>) de <code>NUM</code>.</li>
+              <li><b>Salida:</b> Se imprimen los resultados almacenados en <code>CUA</code> y <code>CUB</code>.</li>
+            </ul>
+            <div class="tip-box">
+              <strong>Tip:</strong> El código sigue una estructura secuencial simple.
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      <img src="../Ejemplo1.9/Diagrama1_9_alta.png" alt="Diagrama de Flujo">
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

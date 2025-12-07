@@ -1,0 +1,69 @@
+digraph DiagramaVectoresSimple {
+    // Configuración General
+    rankdir=TB;
+    splines=ortho; // Líneas Rectas
+    nodesep=0.5;
+    ranksep=0.5;
+
+    // Estilos
+    node [fontname="Arial", fontsize=11, style="filled"];
+    edge [fontsize=10];
+    bgcolor="transparent";
+
+    // --- NODOS ---
+
+    // Columna 1: Primer Ciclo (Lectura y Suma)
+    Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC", group=uno];
+    InitAC [label="AC ← 0\nI ← 1", shape=box, fillcolor="#F9F9F9", group=uno];
+    Cond1 [label="I ≤ 70", shape=diamond, fillcolor="#C8E6C9", group=uno];
+    
+    InputS [label="Leer S[I]", shape=parallelogram, fillcolor="#F9F9F9", group=uno];
+    CalcSum [label="AC ← AC + S[I]\nI ← I + 1", shape=box, fillcolor="#F9F9F9", group=uno];
+
+    // Columna 2: Segundo Ciclo (Promedio y Conteo)
+    CalcProm [label="PROM ← AC/70\nCONT ← 0   I ← 1", shape=box, fillcolor="#F9F9F9", group=dos];
+    Cond2 [label="I ≤ 70", shape=diamond, fillcolor="#A5D6A7", group=dos];
+    
+    CheckProm [label="S[I] > PROM", shape=diamond, fillcolor="#C8E6C9", group=dos];
+    IncCont [label="CONT ← CONT + 1", shape=box, fillcolor="#F9F9F9", group=dos];
+    
+    // Incremento común para el ciclo 2
+    IncI2 [label="I ← I + 1", shape=box, fillcolor="#F9F9F9", group=dos];
+
+    // Columna 3: Fin
+    PrintCont [label="Imprimir CONT", shape=egg, fillcolor="#FFF9C4"];
+    Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+    // --- CONEXIONES SIMPLES ---
+
+    // Flujo Principal 1
+    Inicio -> InitAC;
+    InitAC -> Cond1;
+    
+    // Ciclo 1
+    Cond1 -> InputS [label="Si"];
+    InputS -> CalcSum;
+    // Retorno Ciclo 1 (Solo constraint=false para que suba)
+    CalcSum -> Cond1 [constraint=false];
+
+    // Transición al Ciclo 2 (Salida No)
+    Cond1 -> CalcProm [label="No"];
+
+    // Flujo Principal 2
+    CalcProm -> Cond2;
+    
+    // Ciclo 2
+    Cond2 -> CheckProm [label="Si"];
+    
+    // Decisión Interna
+    CheckProm -> IncCont [label="Si"];
+    CheckProm -> IncI2 [label="No"]; // Salta el contador
+    IncCont -> IncI2;
+
+    // Retorno Ciclo 2
+    IncI2 -> Cond2 [constraint=false];
+
+    // Salida Final
+    Cond2 -> PrintCont [label="No"];
+    PrintCont -> Fin;
+}

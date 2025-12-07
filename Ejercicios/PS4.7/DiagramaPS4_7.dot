@@ -1,0 +1,120 @@
+digraph BusquedaSecuencial {
+    // --- CONFIGURACIÓN GENERAL ---
+    rankdir=TB;
+    splines=ortho; // Mantiene líneas rectas ordenadas
+    nodesep=0.6;
+    ranksep=0.5;
+    bgcolor="transparent";
+    fontname="Helvetica,Arial,sans-serif";
+
+    // --- ESTILOS DE NODOS ---
+    node [
+        fontname="Helvetica,Arial,sans-serif",
+        fontsize=11,
+        shape=box, 
+        style="filled,rounded",
+        penwidth=1.5,
+        color="black",
+        fillcolor="white"
+    ];
+    
+    // --- ESTILOS DE FLECHAS ---
+    edge [
+        fontname="Helvetica,Arial,sans-serif",
+        fontsize=9,
+        penwidth=1.2,
+        color="black",
+        style="solid", 
+        arrowsize=0.8
+    ];
+
+    // --- DEFINICIÓN DE NODOS Y COLORES ---
+    
+    // Terminales
+    node [shape=ellipse, fillcolor="#D4ECD6"] Inicio Fin;
+
+    // Entrada/Salida
+    node [shape=parallelogram, fillcolor="#D6EAF8"] InputN InputVec InputX;
+    node [shape=egg, fillcolor="#D6EAF8"] PrintFound PrintNotFound;
+    
+    // Error
+    node [shape=egg, fillcolor="#F1948A"] ErrorN;
+
+    // Procesos
+    node [shape=box, fillcolor="#FCF3CF"] InitRead IncRead InitSearch Found Next;
+
+    // Decisiones
+    node [shape=diamond, fillcolor="#FAD7A0", height=0.7] CheckN LoopRead LoopSearch CheckMatch CheckResult;
+
+
+    // --- TEXTOS ---
+    Inicio [label="INICIO"];
+    InputN [label="Leer N"];
+    CheckN [label="¿1 ≤ N ≤ 50?"];
+    ErrorN [label="\"El valor de N\nes incorrecto\""];
+
+    InitRead [label="I ← 1"];
+    LoopRead [label="¿I ≤ N?"];
+    InputVec [label="Leer VECTOR[I]"];
+    IncRead [label="I ← I + 1"];
+
+    InputX [label="Leer X (Dato a buscar)"];
+
+    InitSearch [label="I ← 1\nBAND ← 'F'"];
+    LoopSearch [label="¿I ≤ N\n Y \nBAND = 'F'?"];
+    CheckMatch [label="¿VECTOR[I] = X?"];
+    Found [label="BAND ← 'T'\nPOS ← I"];
+    Next [label="I ← I + 1"];
+
+    CheckResult [label="¿BAND = 'T'?"];
+    PrintFound [label="\"Encontrado en posición:\", POS"];
+    PrintNotFound [label="\"No se encuentra\nen el arreglo\""];
+    Fin [label="FIN"];
+
+
+    // --- CONEXIONES AUTOMÁTICAS ---
+    // (Se han eliminado los :e, :w, etc. para que Graphviz decida la ruta)
+
+    Inicio -> InputN;
+    InputN -> CheckN;
+
+    // Validación N
+    CheckN -> ErrorN [label="No"];
+    ErrorN -> Fin;
+    CheckN -> InitRead [label="Si"];
+
+    // Ciclo Lectura
+    InitRead -> LoopRead;
+    LoopRead -> InputVec [label="Si"];
+    InputVec -> IncRead;
+    
+    // Retorno ciclo lectura
+    // 'constraint=false' es necesario para que la flecha regrese hacia arriba sin romper el orden
+    IncRead -> LoopRead [constraint=false]; 
+
+    // Salida Ciclo Lectura -> Busqueda
+    LoopRead -> InputX [label="No"];
+    InputX -> InitSearch;
+    InitSearch -> LoopSearch;
+
+    // Ciclo Búsqueda
+    LoopSearch -> CheckMatch [label="Si"];
+
+    // Comparación interna
+    CheckMatch -> Found [label="Si"];
+    CheckMatch -> Next [label="No"];
+
+    // Retornos al ciclo de búsqueda
+    Found -> LoopSearch [constraint=false];
+    Next -> LoopSearch [constraint=false];
+
+    // Salida del Ciclo Búsqueda
+    LoopSearch -> CheckResult [label="No"];
+
+    // Impresión final
+    CheckResult -> PrintFound [label="Si"];
+    CheckResult -> PrintNotFound [label="No"];
+
+    PrintFound -> Fin;
+    PrintNotFound -> Fin;
+}

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA COMPLETA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* LA TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  </script>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Sueldo de un trabajador</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="person" class="exercise-card" aria-labelledby="person-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">Ejemplo 2.2</span>
+          <h2 id="person-title">Implementar <code>Si entonces</code> en Java</h2>
+
+          <p class="exercise-description">
+            Dado como dato el sueldo de un trabajador, aplíquele un aumento del 15% si su 
+            sueldo es inferior a $1000. Imprima en este caso el nuevo sueldo del trabajador. 
+            Haga el diagrama de flujo correspondiente.
+          </p>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Requisitos</h3>
+            <ul>
+              <li>Solicitar al usuario un sueldo y almacenarlo en <code>SUE</code>.</li>
+              <li>Si <code>SUE</code> es menor que 1000, calcular un aumento (<code>AUM</code>) del 15%.</li>
+              <li>Calcular el nuevo sueldo (<code>NSUE</code>) sumando el aumento (si lo hubo).</li>
+              <li>Imprimir en pantalla el valor de <code>NSUE</code>.</li>
+            </ul>
+
+            <h3>Ejemplo resultado</h3>
+            <pre><code class="code-block">
+</code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas</h3>
+            <ul>
+              <li>Usa el tipo <code>double</code> para las variables <code>SUE</code>, <code>AUM</code> y <code>NSUE</code>, ya que los sueldos y el porcentaje (0.15) pueden incluir decimales.</li>
+              <li>Asegúrate de inicializar <code>NSUE</code> con el valor de <code>SUE</code> (<code>double NSUE = SUE;</code>) antes del <code>if</code>. De esta forma, si el sueldo es 1000 o más, <code>NSUE</code> ya tiene el valor correcto.</li>
+              <li>Para leer un decimal (<code>double</code>) del teclado, usa el método <code>.nextDouble()</code> del objeto <code>Scanner</code>.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> Las operaciones de asignación podrían simplificarse así:<br>
+              <code>NSUE = SUE * 1.15;</code><br>
+              (solo si el sueldo es menor que 1000).
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../Ejemplo2.2/Diagrama2_2_alta.png" alt="Diagrama de flujo del Ejemplo 2.2">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

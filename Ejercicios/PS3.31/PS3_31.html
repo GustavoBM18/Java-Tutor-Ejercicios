@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Números Primos Gemelos</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="ps331" class="exercise-card" aria-labelledby="ps331-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">PS 3.31</span>
+          <h2 id="ps331-title">Implementar código en Java para encontrar Primos Gemelos en un rango</h2>
+
+          <p class="exercise-description">
+            Escriba un programa en Java que obtenga e imprima todos los números <strong>"Primos Gemelos"</strong> comprendidos entre <strong>A</strong> y <strong>B</strong> (enteros positivos). 
+            Los primos gemelos son parejas de números primos con una diferencia entre sí de exactamente dos. Ejemplo: 3 y 5 son primos gemelos.
+          </p>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Requisitos de Implementación</h3>
+            <ul>
+              <li>Leer dos números enteros positivos <code>A</code> y <code>B</code>.</li>
+              <li>Validar que <code>A</code> sea menor que <code>B</code>.</li>
+              <li>Iterar a través del rango y verificar para cada número <code>p</code> si tanto <code>p</code> como <code>p + 2</code> son primos.</li>
+              <li>Imprimir cada pareja encontrada.</li>
+            </ul>
+
+            <h3>Ejemplo de Implementación (Java)</h3>
+            <pre><code class="code-block">
+import java.util.*;
+
+public class PrimosGemelos {
+
+    // Método auxiliar para verificar si un número es primo
+    public static boolean esPrimo(int n) {
+        if (n < 2) return false;
+        // Solo necesitamos probar divisores hasta la raíz cuadrada de n
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Lectura de datos
+        System.out.print("Ingrese el valor de A: ");
+        int A = sc.nextInt();
+        System.out.print("Ingrese el valor de B: ");
+        int B = sc.nextInt();
+
+        if (A >= B) {
+            System.out.println("Error: A debe ser menor que B.");
+            return;
+        }
+
+        System.out.println("Parejas de Primos Gemelos entre " + A + " y " + B + ":");
+        boolean hayGemelos = false;
+
+        // Recorremos desde A hasta B-2 (porque necesitamos evaluar p+2)
+        for (int p = A; p <= B - 2; p++) {
+            
+            // Verificamos si p es primo Y si su "gemelo" (p+2) también lo es
+            if (esPrimo(p) && esPrimo(p + 2)) {
+                System.out.println("(" + p + ", " + (p + 2) + ")");
+                hayGemelos = true;
+            }
+        }
+
+        if (!hayGemelos) {
+            System.out.println("No se encontraron primos gemelos en este rango.");
+        }
+    }
+}
+            </code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas (Variables)</h3>
+            <ul>
+              <li><code>A, B</code>: Variables de tipo entero que representan los números enteros positivos que se ingresan. Definen el rango de búsqueda.</li>
+              <li>Se debe cumplir la condición que <code>A < B</code>.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> Para optimizar el código, recuerda que el único número primo par es el 2. Puedes empezar tu búsqueda asegurándote de que el número inicial sea impar y luego incrementar de 2 en 2, ya que los primos gemelos (excepto el par 3,5) siempre serán impares.
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../PS3.31/DiagramaPS3_31_alta.png" alt="Diagrama de flujo del Problema PS 3.31">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

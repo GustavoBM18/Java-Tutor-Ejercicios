@@ -1,0 +1,34 @@
+digraph DiagramaPosNegEstilizado {
+rankdir=TB;
+node [fontname="Arial", fontsize=12, style="filled"];
+edge [fontsize=10];
+bgcolor="transparent";
+splines=ortho;
+
+Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+Entrada [label="NUM", shape=parallelogram, fillcolor="#F9F9F9"];
+
+Decision1 [label="NUM > 0", shape=diamond, fillcolor="#C8E6C9"];
+Decision2 [label="NUM = 0", shape=diamond, fillcolor="#C8E6C9"];
+
+Positivo [label="\"POSITIVO\"", shape=egg, fillcolor="#FFF9C4"];
+Nulo [label="\"NULO\"", shape=egg, fillcolor="#FFF9C4"];
+Negativo [label="\"NEGATIVO\"", shape=egg, fillcolor="#FFF9C4"];
+
+Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+Inicio -> Entrada;
+Entrada -> Decision1;
+
+Decision1 -> Positivo [label="Si"];
+Decision1 -> Decision2 [label="No"];
+
+Decision2 -> Nulo [label="Si"];
+Decision2 -> Negativo [label="No"];
+
+Positivo -> Fin;
+Nulo -> Fin;
+Negativo -> Fin;
+
+{ rank=same; Positivo; Nulo; Negativo; }
+}

@@ -1,0 +1,110 @@
+digraph PrimosGemelosAutomatico {
+    // 1. CONFIGURACIÓN
+    rankdir=TB;
+    nodesep=0.5; 
+    ranksep=0.5; 
+    // splines=ortho; // ELIMINADO: Dejamos que sean curvas automáticas
+    
+    // Estilos
+    node [fontname="Arial", fontsize=11, style="filled"];
+    edge [fontsize=10];
+    bgcolor="transparent";
+
+    // --- 2. NODOS ---
+
+    // COLUMNA PRINCIPAL (Sugerencia de grupo)
+    Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC", group=main];
+    Entrada [label="A, B", shape=parallelogram, fillcolor="#F9F9F9", group=main];
+    CheckAB [label="A < B", shape=diamond, fillcolor="#C8E6C9", group=main];
+    
+    InitI [label="I ← A", shape=box, fillcolor="#F9F9F9", group=main];
+    LoopMain [label="I <= B - 2", shape=diamond, fillcolor="#C8E6C9", group=main];
+
+    // -- Bloque Primo 1 --
+    InitP1 [label="ES_PRIMO1 ← 'V'\nDIV ← 2", shape=box, fillcolor="#F9F9F9", group=main];
+    LoopP1 [label="DIV <= I / 2\ny\nES_PRIMO1 = 'V'", shape=diamond, fillcolor="#A5D6A7", group=main];
+    CheckDiv1 [label="(I MOD DIV) = 0", shape=diamond, fillcolor="#C8E6C9", group=main];
+    SetFalse1 [label="ES_PRIMO1 ← 'F'", shape=box, fillcolor="#F9F9F9", group=main];
+    IncDiv1 [label="DIV ← DIV + 1", shape=box, fillcolor="#F9F9F9"]; 
+    
+    IsP1True [label="ES_PRIMO1 = 'V'\ny I > 1", shape=diamond, fillcolor="#C8E6C9", group=main];
+
+    // -- Bloque Primo 2 --
+    InitP2 [label="NUM2 ← I + 2\nES_PRIMO2 ← 'V'\nDIV2 ← 2", shape=box, fillcolor="#F9F9F9", group=main];
+    LoopP2 [label="DIV2 <= NUM2 / 2\ny\nES_PRIMO2 = 'V'", shape=diamond, fillcolor="#A5D6A7", group=main];
+    CheckDiv2 [label="(NUM2 MOD DIV2) = 0", shape=diamond, fillcolor="#C8E6C9", group=main];
+    SetFalse2 [label="ES_PRIMO2 ← 'F'", shape=box, fillcolor="#F9F9F9", group=main];
+    IncDiv2 [label="DIV2 ← DIV2 + 1", shape=box, fillcolor="#F9F9F9"];
+
+    IsP2True [label="ES_PRIMO2 = 'V'", shape=diamond, fillcolor="#C8E6C9", group=main];
+
+    // -- Salida e Incremento --
+    Print [label="Primos Gemelos:\nI, NUM2", shape=egg, fillcolor="#FFF9C4", group=main];
+    IncI [label="I ← I + 1", shape=box, fillcolor="#F9F9F9", group=main];
+
+    // -- Nodos Finales / Error --
+    Error [label="A debe ser\nmenor que B", shape=egg, fillcolor="#FFCDD2"];
+    Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+    // --- 3. CONEXIONES AUTOMÁTICAS ---
+    // Se han eliminado todos los :n, :s, :e, :w
+
+    // Inicio
+    Inicio -> Entrada;
+    Entrada -> CheckAB;
+
+    // Validación A < B
+    CheckAB -> InitI [label="Si"];
+    CheckAB -> Error [label="No"];
+    Error -> Fin;
+
+    InitI -> LoopMain;
+
+    // --- CICLO PRINCIPAL ---
+    LoopMain -> InitP1 [label="Si"];
+    LoopMain -> Fin [label="No"];
+
+    // --- SUB-CICLO 1 (Validar I) ---
+    InitP1 -> LoopP1;
+    
+    LoopP1 -> CheckDiv1 [label="Si"];
+    
+    CheckDiv1 -> SetFalse1 [label="Si"];
+    CheckDiv1 -> IncDiv1 [label="No"];
+    
+    // Retornos Sub-ciclo 1 (Mantenemos constraint=false para que no afecte el ranking vertical)
+    SetFalse1 -> LoopP1 [constraint=false];
+    IncDiv1 -> LoopP1 [constraint=false];
+
+    // Salida Sub-ciclo 1
+    LoopP1 -> IsP1True [label="No"];
+
+    // Decisión Primo 1
+    IsP1True -> InitP2 [label="Si"];
+    IsP1True -> IncI [label="No"]; // Salta a incremento I
+
+    // --- SUB-CICLO 2 (Validar I+2) ---
+    InitP2 -> LoopP2;
+
+    LoopP2 -> CheckDiv2 [label="Si"];
+    
+    CheckDiv2 -> SetFalse2 [label="Si"];
+    CheckDiv2 -> IncDiv2 [label="No"];
+
+    // Retornos Sub-ciclo 2
+    SetFalse2 -> LoopP2 [constraint=false];
+    IncDiv2 -> LoopP2 [constraint=false]; 
+
+    // Salida Sub-ciclo 2
+    LoopP2 -> IsP2True [label="No"];
+
+    // Decisión Primo 2
+    IsP2True -> Print [label="Si"];
+    IsP2True -> IncI [label="No"];
+
+    // Imprimir y Continuar
+    Print -> IncI;
+
+    // --- RETORNO CICLO PRINCIPAL ---
+    IncI -> LoopMain [constraint=false];
+}

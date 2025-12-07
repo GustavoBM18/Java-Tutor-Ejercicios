@@ -1,0 +1,90 @@
+digraph DiagramaFabricasEstilizado {
+rankdir=TB;
+node [fontname="Arial", fontsize=12, style="filled"];
+edge [fontsize=10];
+bgcolor="transparent";
+splines=polyline; // Usado para mayor flexibilidad en diagramas con ciclos anidados
+
+// Nodos Principales
+Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+InitMayPro [label="MAYPRO ← 0", shape=box, fillcolor="#F9F9F9"];
+InputN [label="N", shape=parallelogram, fillcolor="#F9F9F9"];
+CheckN [label="N ≤ 100", shape=diamond, fillcolor="#C8E6C9"];
+
+ErrorMsg [label="\"ERROR EN NUMERO\nDE FABRICAS\"", shape=egg, fillcolor="#FFCDD2"];
+
+// Inicio del Ciclo Principal (Fábricas - I)
+InitI [label="I ← 1", shape=box, fillcolor="#F9F9F9"];
+CheckI [label="I ≤ N", shape=diamond, fillcolor="#C8E6C9"];
+
+// Cuerpo Ciclo Principal
+InputFabrica [label="FABRICA", shape=parallelogram, fillcolor="#F9F9F9"];
+InitInner [label="TOTANU ← 0\nJ ← 1", shape=box, fillcolor="#F9F9F9"];
+
+// Inicio del Ciclo Interno (Meses - J)
+CheckJ [label="J ≤ 12", shape=diamond, fillcolor="#A5D6A7"]; // Color diferente para ciclo interno
+InputMes [label="MES", shape=parallelogram, fillcolor="#F9F9F9"];
+CalcTotAnu [label="TOTANU ← TOTANU + MES", shape=box, fillcolor="#F9F9F9"];
+
+// Decisión Julio y Ventas > 3M
+CheckSpecial [label="J = 7\nMES > 3 000 000", shape=diamond, fillcolor="#C8E6C9"];
+PrintSpecial [label="FABRICA", shape=egg, fillcolor="#FFF9C4"];
+
+IncJ [label="J ← J + 1", shape=box, fillcolor="#F9F9F9"];
+
+// Fin Ciclo Interno y Procesos Finales de Fábrica
+CheckMax [label="TOTANU > MAYPRO", shape=diamond, fillcolor="#C8E6C9"];
+UpdateMax [label="MAYPRO ← TOTANU\nCLAVE ← FABRICA", shape=box, fillcolor="#FFCDD2"];
+PrintAnnual [label="\"PRODUCCION ANUAL FABRICA:\",\nFABRICA, \":$\", TOTANU", shape=egg, fillcolor="#FFF9C4"];
+
+IncI [label="I ← I + 1", shape=box, fillcolor="#F9F9F9"];
+
+// Fin del programa
+PrintBest [label="\"FABRICA QUE MAS PRODUJO EN EL AÑO:\",\nCLAVE, \"PRODUCCIÓN: $\", MAYPRO", shape=egg, fillcolor="#FFF9C4"];
+Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+// --- CONEXIONES ---
+
+// Flujo inicial y Validación N
+Inicio -> InitMayPro -> InputN -> CheckN;
+
+// Camino de Error
+CheckN -> ErrorMsg [label="No"];
+ErrorMsg -> Fin;
+
+// Camino de éxito (Inicio Ciclo I)
+CheckN -> InitI [label="Si"];
+InitI -> CheckI;
+
+// Salida del ciclo I (Fin de todas las fábricas)
+CheckI -> PrintBest [label="No"]; 
+PrintBest -> Fin;
+
+// Dentro del ciclo I (Procesar Fábrica)
+CheckI -> InputFabrica [label="Si"];
+InputFabrica -> InitInner -> CheckJ;
+
+// Ciclo J (Meses)
+CheckJ -> InputMes [label="Si"];
+InputMes -> CalcTotAnu -> CheckSpecial;
+
+// Condición Especial
+CheckSpecial -> PrintSpecial [label="Si"];
+CheckSpecial -> IncJ [label="No"];
+PrintSpecial -> IncJ;
+
+// Retorno Ciclo J (constraint=false es clave para que suba sin desordenar)
+IncJ -> CheckJ [constraint=false]; 
+
+// Salida Ciclo J
+CheckJ -> CheckMax [label="No"]; 
+
+// Chequear Máximo
+CheckMax -> UpdateMax [label="Si"];
+CheckMax -> PrintAnnual [label="No"];
+UpdateMax -> PrintAnnual;
+
+// Continuar con siguiente Fábrica
+PrintAnnual -> IncI;
+IncI -> CheckI [constraint=false]; // Regresa arriba al ciclo I
+}

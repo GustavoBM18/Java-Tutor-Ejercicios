@@ -1,0 +1,49 @@
+digraph DiagramaSerieEstilizadoCorregidoFinal {
+rankdir=TB;
+node [fontname="Arial", fontsize=12, style="filled"];
+edge [fontsize=10];
+bgcolor="transparent";
+splines=ortho;
+
+// Nodos principales
+Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC"];
+Init [label="BAND ← 'T'\nSUMSER ← 0, I ← 2", shape=box, fillcolor="#F9F9F9"];
+Condition [label="I ≤ 1800", shape=diamond, fillcolor="#C8E6C9"];
+
+// Cuerpo del ciclo
+SumProcess [label="SUMSER ← SUMSER + I", shape=box, fillcolor="#F9F9F9"];
+ShowI [label="I", shape=egg, fillcolor="#FFF9C4"];
+InnerDecision [label="BAND = 'T'", shape=diamond, fillcolor="#C8E6C9"];
+
+// Ramas de actualización
+BranchSi [label="BAND ← 'F'\nI ← I + 3", shape=box, fillcolor="#F9F9F9"];
+BranchNo [label="BAND ← 'T'\nI ← I + 2", shape=box, fillcolor="#F9F9F9"];
+
+// Nodos de salida
+FinalOutput [label="SUMSER", shape=egg, fillcolor="#FFF9C4"];
+Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+// -- Agrupación para Alinear Ramas --
+{ rank=same; BranchSi; BranchNo; }
+
+// Conexiones
+Inicio -> Init;
+Init -> Condition;
+
+// Ciclo Mientras
+Condition -> SumProcess [label="Si"];
+Condition -> FinalOutput [label="No"]; 
+
+SumProcess -> ShowI;
+ShowI -> InnerDecision;
+
+// Decisión interna y Ramificación
+InnerDecision -> BranchSi [label="Si"];
+InnerDecision -> BranchNo [label="No", minlen=2]; // Agregamos minlen=2 aquí también para darle espacio
+
+// Retorno del ciclo (Agregamos weight=10 para darle prioridad al camino y evitar cruces)
+BranchSi -> Condition [constraint=false, weight=10, minlen=2];
+BranchNo -> Condition [constraint=false, weight=10, minlen=2];
+
+FinalOutput -> Fin;
+}

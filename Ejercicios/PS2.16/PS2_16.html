@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+
+    /* ESTILO EXTRA PARA LA TABLA */
+    .exercise-table {
+      width: 100%;
+      max-width: 400px;
+      margin: 15px 0;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .exercise-table th, .exercise-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .exercise-table th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Descuentos de Vehículos</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="p" class="exercise-card" aria-labelledby="ps216-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">PS 2.16</span>
+          <h2 id="ps216-title">Implementar código en Java para calcular el pago final de un vehículo</h2>
+
+          <p class="exercise-description">
+            Escriba un programa en Java que, dado como datos el <strong>modelo</strong> de un vehículo y su <strong>precio</strong>, determine el valor final que debe pagar el comprador. El concesionario está haciendo descuentos teniendo en cuenta el modelo, con base en la siguiente tabla:
+          </p>
+
+          <table class="exercise-table" aria-label="Tabla de descuentos">
+            <thead>
+              <tr><th>MODELO</th><th>DESCUENTO</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Blazer-Trail</td><td>8%</td></tr>
+              <tr><td>Cavalier</td><td>5%</td></tr>
+              <tr><td>Chevy</td><td>6%</td></tr>
+              <tr><td>Opel-Astra</td><td>9%</td></tr>
+            </tbody>
+          </table>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Requisitos de Implementación</h3>
+            <ul>
+              <li>Leer el <code>MODELO</code> (cadena) y <code>PRECIO</code> (real).</li>
+              <li>Determinar el porcentaje de descuento comparando el modelo ingresado con los de la tabla.</li>
+              <li>Si el modelo no está en la tabla, el descuento es 0%.</li>
+              <li>Calcular el precio final restando el descuento al precio original.</li>
+              <li>Imprimir el descuento aplicado y el total a pagar.</li>
+            </ul>
+
+            <h3>Ejemplo de Implementación (Java)</h3>
+            <pre><code class="code-block">
+
+            </code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas (Variables)</h3>
+            <ul>
+              <li><code>MODELO</code>: Es una variable de tipo cadena de caracteres que representa el modelo del vehículo.</li>
+              <li><code>PRECIO</code>: Es una variable de tipo real que representa el precio del vehículo.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> Recuerda que en Java no se debe usar <code>==</code> para comparar el contenido de dos cadenas (Strings). Debes utilizar el método <code>.equals()</code> o <code>.equalsIgnoreCase()</code> para que la comparación funcione correctamente.
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../PS2.16/DiagramaPS2_16_alta.png" alt="Diagrama de flujo del Problema PS 2.16">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

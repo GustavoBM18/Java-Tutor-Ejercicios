@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+
+    /* ESTILO EXTRA PARA LA TABLA */
+    .exercise-table {
+      width: 100%;
+      max-width: 600px;
+      margin: 15px 0;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .exercise-table th, .exercise-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .exercise-table th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Procesamiento de Registros Escolares</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="ps52" class="exercise-card" aria-labelledby="ps52-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">PS 5.2</span>
+          <h2 id="ps52-title">Implementar código en Java para procesar arreglo de alumnos</h2>
+
+          <p class="exercise-description">
+            En la escuela se almacena información de <b>N</b> alumnos en un arreglo unidimensional de
+            registros llamado <code>ESC[1..N]</code> (1 ≤ N ≤ 2000). Construya un programa en Java que procese estos datos para generar reportes específicos.
+          </p>
+
+          <table class="exercise-table" aria-label="Estructura del registro del alumno">
+            <thead>
+              <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>NOM</td><td>Cadena</td><td>Nombre del alumno</td></tr>
+              <tr><td>MAT</td><td>Entero</td><td>Matrícula</td></tr>
+              <tr><td>NSE</td><td>Entero</td><td>Número de semestres cursados</td></tr>
+              <tr><td>SEM[1..9]</td><td>Real[]</td><td>Promedio por semestre (máx. 9)</td></tr>
+              <tr><td>CAR</td><td>Cadena</td><td>Carrera</td></tr>
+            </tbody>
+          </table>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Objetivos del Programa</h3>
+            <ol>
+              <li><b>(a)</b> Listar <b>nombre</b> y <b>matrícula</b> de los alumnos que tengan un <u>promedio general mayor a 9</u>.</li>
+              <li><b>(b)</b> Listar <b>nombre</b> y <b>matrícula</b> de los alumnos de la carrera de <b>Economía</b> que hayan obtenido un <u>promedio mayor a 9 en todos sus semestres cursados</u>.</li>
+              <li><b>(c)</b> Imprimir <b>nombre</b> y <b>matrícula</b> del alumno con el <u>mayor promedio general</u> de la carrera de <b>Ingeniería en Computación</b>.</li>
+            </ol>
+
+            <h3>Ejemplo de Implementación (Java)</h3>
+            <pre><code class="code-block">
+            </code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas</h3>
+            <ul>
+              <li><code>ESC</code>: Es un arreglo de registros que almacena la información de todos los alumnos.</li>
+              <li>El promedio general se calcula sumando las calificaciones de los <code>NSE</code> semestres cursados y dividiendo entre <code>NSE</code>.</li>
+              <li>Para el inciso (b), se debe verificar individualmente que <b>cada</b> calificación del arreglo <code>SEM</code> sea mayor a 9.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> En Java, podemos simular un "registro" (struct) utilizando una <b>clase interna estática</b> (<code>static class Alumno</code>) para agrupar los datos heterogéneos (enteros, cadenas y arreglos) en una sola estructura.
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../PS5.2/DiagramaPS5_3_alta.png" alt="Diagrama de flujo del Problema PS 5.2">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

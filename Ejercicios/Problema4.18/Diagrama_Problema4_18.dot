@@ -1,0 +1,132 @@
+digraph CuadradoMagicoEstilizado {
+    // 1. CONFIGURACIÓN GENERAL
+    rankdir=TB;
+    nodesep=0.6; 
+    ranksep=0.5; 
+    splines=ortho; // Líneas Rectas
+    
+    // Estilos
+    node [fontname="Arial", fontsize=11, style="filled", margin=0.15];
+    edge [fontsize=10];
+    bgcolor="transparent";
+
+    // --- 2. NODOS ---
+
+    // COLUMNA PRINCIPAL (Camino del Éxito)
+    Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC", group=main];
+    MsgDim [label="Ingrese dimensión\ndel cuadrado", shape=egg, fillcolor="#FFF9C4", group=main];
+    InputN [label="N", shape=parallelogram, fillcolor="#F9F9F9", group=main];
+    
+    // Validación
+    CheckN [label="1 ≤ N ≤ 50\ny (N MOD 2 <> 0)", shape=diamond, fillcolor="#C8E6C9", group=main];
+
+    // Inicialización
+    InitVars [label="J ← (N + 1) DIV 2\nI ← 1", shape=box, fillcolor="#F9F9F9", group=main];
+    InitCM [label="CM[I, J] ← 1", shape=box, fillcolor="#F9F9F9", group=main];
+    InitNum [label="NUM ← 2", shape=box, fillcolor="#F9F9F9", group=main];
+
+    // Ciclo Llenado
+    LoopFill [label="NUM ≤ N*N", shape=diamond, fillcolor="#C8E6C9", group=main];
+    
+    // Decisión Modulo
+    CheckMod [label="((NUM-1)\nMOD N)=0", shape=diamond, fillcolor="#C8E6C9", group=main];
+    
+    // Ramas de Modulo (Si y No)
+    BranchSi_Mod [label="I ← I + 1", shape=box, fillcolor="#F9F9F9", group=main];
+    BranchNo_Mod [label="I ← I - 1\nJ ← J + 1", shape=box, fillcolor="#F9F9F9"]; // Fuera del grupo main para que salga a la derecha
+
+    // Ajustes de límites
+    CheckI0 [label="I = 0", shape=diamond, fillcolor="#C8E6C9", group=main];
+    FixI [label="I ← N", shape=box, fillcolor="#F9F9F9"]; // Rama lateral
+    
+    CheckJN [label="J > N", shape=diamond, fillcolor="#C8E6C9", group=main];
+    FixJ [label="J ← 1", shape=box, fillcolor="#F9F9F9"]; // Rama lateral
+
+    // Asignación
+    AssignCM [label="CM[I, J] ← NUM", shape=box, fillcolor="#F9F9F9", group=main];
+    IncNum [label="NUM ← NUM + 1", shape=box, fillcolor="#F9F9F9", group=main];
+
+    // -- BLOQUE DE IMPRESIÓN (Desplazado a la derecha cuando LoopFill termina) --
+    MsgMagic [label="Cuadrado\nMágico", shape=egg, fillcolor="#FFF9C4", group=print];
+    InitPrintI [label="I ← 1", shape=box, fillcolor="#F9F9F9", group=print];
+    LoopPrintI [label="I ≤ N", shape=diamond, fillcolor="#A5D6A7", group=print];
+    
+    InitPrintJ [label="J = 1", shape=box, fillcolor="#F9F9F9", group=print];
+    LoopPrintJ [label="J ≤ N", shape=diamond, fillcolor="#A5D6A7", group=print];
+    
+    PrintVal [label="CM[I, J]", shape=egg, fillcolor="#FFF9C4", group=print];
+    IncPrintJ [label="J = J + 1", shape=box, fillcolor="#F9F9F9", group=print];
+    IncPrintI [label="I = I + 1", shape=box, fillcolor="#F9F9F9", group=print];
+
+    // -- NODOS DE SALIDA / ERROR --
+    MsgError [label="Error en el\ndato", shape=egg, fillcolor="#FFCDD2"];
+    Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+    // --- 3. CONEXIONES ---
+
+    // Flujo Inicial
+    Inicio -> MsgDim;
+    MsgDim -> InputN;
+    InputN -> CheckN;
+
+    // Validación N
+    CheckN -> InitVars [label="Si"];
+    CheckN -> MsgError [label="No"]; // Sale derecha
+    MsgError -> Fin; 
+
+    // Inicialización
+    InitVars -> InitCM;
+    InitCM -> InitNum;
+    InitNum -> LoopFill;
+
+    // Ciclo Llenado
+    LoopFill -> CheckMod [label="Si"];
+    
+    // Decisión Modulo
+    CheckMod -> BranchSi_Mod [label="Si"]; // Abajo
+    CheckMod -> BranchNo_Mod [label="No"]; // Derecha
+    
+    // Re-unión hacia CheckI0
+    BranchSi_Mod -> CheckI0;
+    BranchNo_Mod -> CheckI0; // Conecta diagonalmente o recto hacia abajo
+
+    // Check I=0
+    CheckI0 -> CheckJN [label="No"]; // Si no es 0, sigue recto (camino común)
+    CheckI0 -> FixI [label="Si"]; // Rama derecha
+    FixI -> CheckJN; // Vuelve al flujo
+
+    // Check J>N
+    CheckJN -> AssignCM [label="No"];
+    CheckJN -> FixJ [label="Si"];
+    FixJ -> AssignCM;
+
+    // Vuelta del ciclo Llenado
+    AssignCM -> IncNum;
+    // Retorno Largo por la Izquierda
+    IncNum -> LoopFill [constraint=false]; 
+
+    // Salida del Ciclo Llenado -> Impresión
+    LoopFill -> MsgMagic [label="No"]; 
+
+    // Bloque Impresión
+    MsgMagic -> InitPrintI;
+    InitPrintI -> LoopPrintI;
+    
+    // Ciclo I Impresión
+    LoopPrintI -> InitPrintJ [label="Si"];
+    LoopPrintI -> Fin [label="No"]; // Fin del programa
+
+    // Ciclo J Impresión
+    InitPrintJ -> LoopPrintJ;
+    LoopPrintJ -> PrintVal [label="Si"];
+    PrintVal -> IncPrintJ;
+    
+    // Retorno Ciclo J
+    IncPrintJ -> LoopPrintJ [constraint=false];
+
+    // Salida Ciclo J -> Incremento I
+    LoopPrintJ -> IncPrintI [label="No"];
+    
+    // Retorno Ciclo I
+    IncPrintI -> LoopPrintI [constraint=false];
+}

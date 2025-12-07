@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Análisis de Ingresos Universitarios</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="ps423" class="exercise-card" aria-labelledby="ps423-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">PS 4.23</span>
+          <h2 id="ps423-title">Análisis de ingresos a la universidad (12 años · 7 carreras)</h2>
+
+          <p class="exercise-description">
+            Se conoce el número de alumnos que ingresaron en <b>7 carreras</b> durante los últimos
+            <b>12 años</b>. Escriba un programa que calcule:
+            <b>(a)</b> total de alumnos por año,
+            <b>(b)</b> porcentaje de alumnos del <em>año X</em> en la <em>carrera Y</em>,
+            <b>(c)</b> el año y la carrera con el <em>menor ingreso</em>,
+            <b>(d)</b> el año en el que la <em>carrera T</em> tuvo su <em>mayor ingreso</em>.
+          </p>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Datos de entrada</h3>
+            <ul>
+              <li><code>ALUM[i][j]</code> (entero ≥ 0) para <code>i = 1..12</code> (años) y <code>j = 1..7</code> (carreras).</li>
+              <li><code>X</code> (año 1..12), <code>Y</code> (carrera 1..7) para el inciso (b).</li>
+              <li><code>T</code> (carrera 1..7) para el inciso (d).</li>
+            </ul>
+
+            <h3>Requisitos</h3>
+            <ul>
+              <li>(a) Sumar por filas (cada año) y mostrar 12 totales.</li>
+              <li>(b) Porcentaje = <code>ALUM[X][Y] / SUMA_ANUAL[X] * 100</code>.</li>
+              <li>(c) Buscar el mínimo global en la matriz (guardar coordenadas año/carrera).</li>
+              <li>(d) En la carrera <code>T</code>, localizar el año con el máximo ingreso.</li>
+            </ul>
+
+            <h3>Ejemplo de uso (Java 21)</h3>
+            <pre><code class="code-block">
+// Archivo: IngresosUniversidad.java
+// PS 4.23 — 12 años x 7 carreras
+
+import java.util.*;
+
+public class IngresosUniversidad {
+
+    public static void main(String[] args) {
+        final int ANIOS = 12, CARRERAS = 7;
+        Scanner sc = new Scanner(System.in).useLocale(Locale.US);
+
+        int[][] ALUM = new int[ANIOS][CARRERAS];
+
+        // --- Lectura de la matriz ---
+        for (int i = 0; i < ANIOS; i++) {
+            System.out.println("Año " + (i + 1) + ":");
+            for (int j = 0; j < CARRERAS; j++) {
+                System.out.print("  ALUM[" + (i + 1) + "][" + (j + 1) + "] = ");
+                ALUM[i][j] = sc.nextInt(); // >= 0
+            }
+        }
+
+        // Parámetros para (b) y (d)
+        System.out.print("X (año 1..12): ");
+        int X = sc.nextInt();
+        System.out.print("Y (carrera 1..7): ");
+        int Y = sc.nextInt();
+        System.out.print("T (carrera 1..7): ");
+        int T = sc.nextInt();
+
+        if (X < 1 || X > 12 || Y < 1 || Y > 7 || T < 1 || T > 7) {
+            System.out.println("Error: X, Y o T fuera de rango.");
+            sc.close();
+            return;
+        }
+
+        // (a) Totales por año
+        int[] sumaAnio = new int[ANIOS];
+        for (int i = 0; i < ANIOS; i++) {
+            int suma = 0;
+            for (int j = 0; j < CARRERAS; j++) suma += ALUM[i][j];
+            sumaAnio[i] = suma;
+        }
+
+        System.out.println("\n(a) Totales por año:");
+        for (int i = 0; i < ANIOS; i++) {
+            System.out.printf(Locale.US, "  Año %2d: %d alumnos%n", (i + 1), sumaAnio[i]);
+        }
+
+        // (b) Porcentaje del año X y carrera Y
+        double porcentaje = (sumaAnio[X - 1] == 0) ? 0.0
+            : (ALUM[X - 1][Y - 1] * 100.0) / sumaAnio[X - 1];
+        System.out.printf(Locale.US,
+            "%n(b) Porcentaje carrera %d en año %d: %.2f%%%n", Y, X, porcentaje);
+
+        // (c) Año y carrera con menor ingreso (mínimo global)
+        int minVal = Integer.MAX_VALUE, minAnio = -1, minCar = -1;
+        for (int i = 0; i < ANIOS; i++) {
+            for (int j = 0; j < CARRERAS; j++) {
+                if (ALUM[i][j] < minVal) { minVal = ALUM[i][j]; minAnio = i + 1; minCar = j + 1; }
+            }
+        }
+        System.out.printf("(c) Menor ingreso: %d alumnos (año %d, carrera %d)%n",
+                minVal, minAnio, minCar);
+
+        // (d) En la carrera T, año con mayor ingreso
+        int maxVal = -1, anioMax = -1;
+        for (int i = 0; i < ANIOS; i++) {
+            if (ALUM[i][T - 1] > maxVal) { maxVal = ALUM[i][T - 1]; anioMax = i + 1; }
+        }
+        System.out.printf("(d) Carrera %d tuvo su mayor ingreso en el año %d (%d alumnos)%n",
+                T, anioMax, maxVal);
+
+        sc.close();
+        // FIN
+    }
+}
+            </code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Notas rápidas</h3>
+            <ul>
+              <li>Indice de <b>años</b>: filas (1..12); <b>carreras</b>: columnas (1..7).</li>
+              <li>Para (b), si el total del año es 0, el porcentaje se define como 0.00%.</li>
+              <li>En empates, el algoritmo reporta la primera posición que alcanza el mínimo/máximo.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> Si los datos vienen de CSV, puedes leer fila por fila con
+              <code>Scanner</code> o <code>Files.lines</code> y reutilizar el mismo procesamiento.
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../PS4.23/DiagramaPS4_23_alta.png" alt="Diagrama de flujo del Problema PS 4.23">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

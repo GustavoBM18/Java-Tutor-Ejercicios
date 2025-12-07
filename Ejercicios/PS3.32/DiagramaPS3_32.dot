@@ -1,0 +1,97 @@
+digraph DiagramaVentasMejorado {
+    // 1. CONFIGURACIÓN
+    rankdir=TB;
+    nodesep=0.6; // Espacio horizontal para evitar choques
+    ranksep=0.5; // Espacio vertical
+    splines=ortho; // Líneas Rectas
+    
+    // Estilos
+    node [fontname="Arial", fontsize=11, style="filled"];
+    edge [fontsize=10];
+    bgcolor="transparent";
+
+    // --- 2. NODOS ---
+
+    // -- BLOQUE 1: INICIO Y CONFIGURACIÓN GLOBAL (Grupo Main) --
+    Inicio [label="INICIO", shape=ellipse, fillcolor="#B3E5FC", group=main];
+    InputN [label="N", shape=parallelogram, fillcolor="#F9F9F9", group=main];
+    InitGlobal [label="TOTEMP ← 0\nMAYPROM ← 0\nANIO_M ← 0\nI ← 1", shape=box, fillcolor="#F9F9F9", group=main];
+    
+    // Ciclo Externo (I)
+    CondI [label="I ≤ 14", shape=diamond, fillcolor="#C8E6C9", group=main];
+
+    // -- BLOQUE 2: CONFIGURACIÓN ANUAL (Grupo Main) --
+    InitYear [label="SUMANIO ← 0\nMAXVEN ← 0\nSUCMEJ ← 0\nJ ← 1", shape=box, fillcolor="#F9F9F9", group=main];
+    
+    // Ciclo Interno (J)
+    CondJ [label="J ≤ N", shape=diamond, fillcolor="#A5D6A7", group=main];
+    
+    // Cuerpo Ciclo Interno
+    InputVenta [label="VENTA", shape=parallelogram, fillcolor="#F9F9F9", group=main];
+    CalcSums [label="TOTEMP ← TOTEMP + VENTA\nSUMANIO ← SUMANIO + VENTA", shape=box, fillcolor="#F9F9F9", group=main];
+
+    // Decisión Mejor Sucursal
+    CheckMaxB [label="VENTA > MAXVEN", shape=diamond, fillcolor="#C8E6C9", group=main];
+    UpdateMaxB [label="MAXVEN ← VENTA\nSUCMEJ ← J", shape=box, fillcolor="#F9F9F9", group=main];
+    
+    // Incremento J
+    IncJ [label="J ← J + 1", shape=box, fillcolor="#F9F9F9", group=main];
+
+    // -- BLOQUE 3: FIN DE AÑO (Salida del Ciclo J) --
+    // Estos nodos no están en el grupo main para que se acomoden a la derecha o abajo según convenga
+    CalcProm [label="PROMANIO ← SUMANIO / N", shape=box, fillcolor="#F9F9F9"];
+    
+    PrintYearly [label="\"Año:\", I\n\"Mejor Sucursal:\", SUCMEJ\n\"Promedio Año:\", PROMANIO", shape=egg, fillcolor="#FFF9C4"];
+    
+    // Decisión Mejor Año
+    CheckBestYear [label="PROMANIO > MAYPROM", shape=diamond, fillcolor="#C8E6C9"];
+    UpdateBestYear [label="MAYPROM ← PROMANIO\nANIO_M ← I", shape=box, fillcolor="#F9F9F9"];
+    
+    // Incremento I
+    IncI [label="I ← I + 1", shape=box, fillcolor="#F9F9F9"];
+
+    // -- BLOQUE 4: FIN DEL PROGRAMA (Salida del Ciclo I) --
+    PrintFinal [label="\"Año Mayor Promedio:\", ANIO_M\n\"Venta Total:\", TOTEMP", shape=egg, fillcolor="#FFF9C4"];
+    Fin [label="FIN", shape=ellipse, fillcolor="#B3E5FC"];
+
+    // --- 3. CONEXIONES ---
+
+    // Flujo Inicial
+    Inicio -> InputN;
+    InputN -> InitGlobal;
+    InitGlobal -> CondI;
+
+    // Entrada Ciclo I
+    CondI -> InitYear [label="Si"];
+    InitYear -> CondJ;
+
+    // Entrada Ciclo J
+    CondJ -> InputVenta [label="Si"];
+    InputVenta -> CalcSums;
+    CalcSums -> CheckMaxB;
+
+    // Lógica Max Venta
+    CheckMaxB -> UpdateMaxB [label="Si"];
+    CheckMaxB -> IncJ [label="No"];
+    UpdateMaxB -> IncJ;
+
+    // Retorno Ciclo J (Por la izquierda)
+    IncJ -> CondJ [constraint=false];
+
+    // Salida Ciclo J (No) -> Procesos de fin de año
+    CondJ -> CalcProm [label="No"];
+    CalcProm -> PrintYearly;
+    PrintYearly -> CheckBestYear;
+
+    // Lógica Mejor Año
+    CheckBestYear -> UpdateBestYear [label="Si"];
+    CheckBestYear -> IncI [label="No"];
+    UpdateBestYear -> IncI;
+
+    // Retorno Ciclo I (Grande, por la izquierda)
+    IncI -> CondI [constraint=false];
+
+    // Salida Ciclo I (No) -> Fin Programa
+    CondI -> PrintFinal [label="No"];
+    PrintFinal -> Fin;
+}

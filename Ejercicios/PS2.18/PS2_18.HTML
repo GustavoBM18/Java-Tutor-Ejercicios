@@ -1,0 +1,210 @@
+    <!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicios de OOP en Java</title>
+  <link rel="stylesheet" href="/java-tutor-tics/styles_desc.css">
+
+  <style>
+    /* Estilo del botón */
+    .btn-diagrama {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    .btn-diagrama:hover {
+      background-color: #0056b3;
+    }
+
+    /* FONDO OSCURO DE LA PANTALLA */
+    .modal-overlay {
+      display: none; 
+      position: fixed; 
+      z-index: 9999;   
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* CONTENEDOR PARA CENTRAR */
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* TARJETA BLANCA PARA LA IMAGEN */
+    .modal-content img {
+      background-color: white;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+
+    /* BOTÓN DE CERRAR (X) */
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: color 0.3s;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes zoomIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+
+    /* ESTILO EXTRA PARA LA TABLA */
+    .exercise-table {
+      width: 100%;
+      max-width: 600px;
+      margin: 15px 0;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .exercise-table th, .exercise-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .exercise-table th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Calculadora de Llamadas Internacionales</h1>
+    </header>
+
+    <main class="exercises-main">
+      <article id="ps218-llamada" class="exercise-card" aria-labelledby="ps218-llamada-title">
+        
+        <header class="exercise-header">
+          <span class="exercise-badge">PS 2.18</span>
+          <h2 id="ps218-llamada-title">Implementar algoritmo para calcular costo de llamada según zona</h2>
+
+          <p class="exercise-description">
+            Construya un programa en Java que calcule e imprima el costo total de una llamada telefónica basándose en la <b>zona geográfica</b> de destino y la <b>duración</b> en minutos.
+          </p>
+
+          <table class="exercise-table" aria-label="Tabla de tarifas por zona">
+            <thead>
+              <tr><th>CLAVE</th><th>ZONA</th><th>PRECIO (1-3 min)</th><th>PRECIO (4+ min)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>12</td><td>América del Norte</td><td>$2</td><td>$1.5</td></tr>
+              <tr><td>15</td><td>América Central</td><td>$2.2</td><td>$1.8</td></tr>
+              <tr><td>18</td><td>América del Sur</td><td>$4.5</td><td>$3.5</td></tr>
+              <tr><td>19</td><td>Europa</td><td>$3.5</td><td>$2.7</td></tr>
+              <tr><td>23</td><td>Asia</td><td>$6</td><td>$4.6</td></tr>
+              <tr><td>25</td><td>África</td><td>$6</td><td>$4.6</td></tr>
+              <tr><td>29</td><td>Oceanía</td><td>$5</td><td>$3.9</td></tr>
+            </tbody>
+          </table>
+
+          <button class="btn-diagrama" onclick="verDiagrama()">
+            📊 Ver Diagrama de Flujo
+          </button>
+        </header>
+
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Requisitos de Implementación</h3>
+            <ul>
+              <li>Leer la <code>CLAVE</code> (entero) y la duración <code>NUMIN</code> (puede ser decimal).</li>
+              <li>Identificar los costos (precio base y precio extra) usando una estructura <code>switch</code> basada en la clave.</li>
+              <li>Aplicar la regla de cobro:
+                <ul>
+                  <li>Si la llamada dura 3 minutos o menos: <code>Costo = NUMIN * PrecioBase</code>.</li>
+                  <li>Si dura más de 3 minutos: <code>Costo = (3 * PrecioBase) + ((NUMIN - 3) * PrecioExtra)</code>.</li>
+                </ul>
+              </li>
+              <li>Imprimir el costo total formateado.</li>
+            </ul>
+
+            <h3>Ejemplo de Implementación (Java)</h3>
+            <pre><code class="code-block">
+            </code></pre>
+          </section>
+
+          <aside class="exercise-sidebar">
+            <h3>Lógica de cobro</h3>
+            <p>Este problema aplica una <b>tarifa escalonada</b>:</p>
+            <ul>
+              <li>Los primeros 3 minutos se cobran a una tarifa inicial (más alta).</li>
+              <li>A partir del 4º minuto, el costo por minuto disminuye.</li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>Tip:</strong> Si usas <code>int</code> para la variable de minutos, el cálculo solo será exacto para minutos enteros. Es mejor usar <code>double</code> para permitir el cobro de fracciones de tiempo (por ejemplo, 3.5 minutos).
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="modalDiagrama" class="modal-overlay" onclick="cerrarDiagrama(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="cerrarDiagramaManual()">&times;</span>
+      
+      <img src="../PS2.18/DiagramaPS2_18_alta.png" alt="Diagrama de flujo Costo Llamada">
+      
+    </div>
+  </div>
+
+  <script>
+    function verDiagrama() {
+      document.getElementById('modalDiagrama').style.display = 'block';
+    }
+
+    function cerrarDiagramaManual() {
+      document.getElementById('modalDiagrama').style.display = 'none';
+    }
+
+    function cerrarDiagrama(event) {
+      if (event.target.id === 'modalDiagrama') {
+        document.getElementById('modalDiagrama').style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>
