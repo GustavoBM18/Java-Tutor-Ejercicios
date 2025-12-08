@@ -1,0 +1,1 @@
+dot -Tpng -Gdpi=300 archivo.dot -o imagen_hd.png
